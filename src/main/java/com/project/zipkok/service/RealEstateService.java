@@ -40,7 +40,7 @@ public class RealEstateService {
 
 //        try {
             RealEstate realEstate = realEstateRepository.findById(realEstateId).get();
-            User user = userRepository.findByUserId(userId);
+//            User user = userRepository.findByUserId(userId);
 
             List<String> realEstateImages = new ArrayList<>();
 
@@ -52,16 +52,20 @@ public class RealEstateService {
                     .forEach(realEstateImages::add);
 
 
-            boolean isZimmed = false;
-            boolean isKokked = false;
+//            boolean isZimmed = false;
+            Long zimCount = zimRepository.existsByUserIdAndRealEstateId(userId, realEstateId);
+            boolean isZimmed = zimCount > 0;
+//            boolean isKokked = false;
+            Long kokCount = kokRepository.existsByUserIdAndRealEstateId(userId, realEstateId);
+            boolean isKokked = kokCount > 0;
 
-            if (zimRepository.findFirstByUserAndRealEstate(user, realEstate) != null) {
-                isZimmed = true;
-            }
+//            if (zimRepository.findFirstByUserAndRealEstate(user, realEstate) != null) {
+//                isZimmed = true;
+//            }
 
-            if (kokRepository.findFirstByUserAndRealEstate(user, realEstate) != null) {
-                isKokked = true;
-            }
+//            if (kokRepository.findFirstByUserAndRealEstate(user, realEstate) != null) {
+//                isKokked = true;
+//            }
 
             List<GetRealEstateResponse.RealEstateBriefInfo> neighborRealEstates = realEstateRepository.findAllByProximity(realEstate.getLatitude(), realEstate.getLongitude())
                     .stream()
